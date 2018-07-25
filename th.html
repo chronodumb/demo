@@ -9,18 +9,18 @@
         var hh = [];
 
         var ts = [
-            {type:"t", name:"a1", give:1, take:6},
-            {type:"t", name:"a2", give:1, take:5},
-            {type:"t", name:"b1", give:2, take:4},
-            {type:"t", name:"b2", give:2, take:3},
-            {type:"t", name:"c1", give:3, take:2},
-            {type:"t", name:"c2", give:3, take:1},
-            {type:"t", name:"d1", give:4, take:6},
-            {type:"t", name:"d2", give:4, take:5},
-            {type:"t", name:"e1", give:5, take:4},
-            {type:"t", name:"e2", give:5, take:3},
-            {type:"t", name:"f1", give:6, take:2},
-            {type:"t", name:"f2", give:6, take:1},
+            {type:"t", name:"a1", give:1, take:[6]},
+            {type:"t", name:"a2", give:1, take:[5]},
+            {type:"t", name:"b1", give:2, take:[4]},
+            {type:"t", name:"b2", give:2, take:[3]},
+            {type:"t", name:"c1", give:3, take:[2]},
+            {type:"t", name:"c2", give:3, take:[1]},
+            {type:"t", name:"d1", give:4, take:[6]},
+            {type:"t", name:"d2", give:4, take:[5]},
+            {type:"t", name:"e1", give:5, take:[4]},
+            {type:"t", name:"e2", give:5, take:[3]},
+            {type:"t", name:"f1", give:6, take:[2]},
+            {type:"t", name:"f2", give:6, take:[1]},
         ];
 
         var rs = [
@@ -76,6 +76,8 @@
         ]
 
         var cc = null;
+
+        var sell = [];
 
         $(document).ready(function(){
             start()
@@ -153,6 +155,8 @@
         }
 
         function doTurn(){
+            sell = [];
+
             if (td.length < 3){
                 td.push.apply(td,dd);
                 dd = [];
@@ -163,8 +167,6 @@
             dd.push(draw(td));
             dd.push(draw(td));
             cc = draw(td);
-            dd.push(cc);
-
 
             render();
 
@@ -176,9 +178,20 @@
             if (cc){
                 console.log(cc);
 
-                let opt1="",opt2="<a onclick='doTurn()'>SKIP</a>";
+                $(".sell").hide();
+
+                let opt1="",opt2="<a class='opt' onclick='skip()'>SKIP</a><br/>";
                 if (cc.type=="r"){
-                    opt1 = "<a onclick='take()'>TAKE</a>"
+                    opt1 = "<a class='opt' onclick='take()'>TAKE</a>"
+                }
+                if (cc.type=="t"){
+                    opt1 = "<a class='opt disable' onclick='trade()'>TRADE</a>"
+
+                    sell = [];
+                    $(".sell").show();
+
+                    $(".sell .order").html(cc.give + " = " + cc.take);
+                    $(".sell .give").html();
                 }
 
                 $(".td").html("<div class='c'>"
@@ -190,21 +203,97 @@
 
             var hr = "";
             for (i in hh){
-                hr += "<div class='c'>" + hh[i].name + "</div> "
+                hr += "<div class='c' onclick='give("+ i +")' id='hh"+ i +"'>" + hh[i].name + "</div> "
             }
             $(".hh").html(hr);
 
         }
 
+        function trade(){
+            console.log("trade")
+            if (sell.length == 0){
+
+            }
+        }
+
+        function give(i){
+            if (cc.take && cc.take.includes(hh[i].give)){
+                sell.push(i);
+                $("#hh"+i).addClass("disable");
+                renderSell();
+            }
+        }
+
+        function ungive(x){
+            var i = sell.splice(x,1)[0];
+            $("#hh"+i).removeClass("disable");
+            renderSell();
+
+        }
+
+        function renderSell(){
+            $(".sell").show();
+
+            var seller = "";
+            for (x in sell){
+                var i = sell[x];
+                seller += "<a class='c' onclick='ungive("+i+")'>" + hh[i].name+ "</a>";
+            }
+            $(".sell .give").html(seller);
+        }
+
+        function isEqual(a,b){
+            console.log(comparing);
+            if (a === b) return true;
+            if (a == null || b == null) return false;
+            if (a.length != b.length) return false;
+
+            // If you don't care about the order of the elements inside
+            // the array, you should sort both arrays here.
+
+            for (var i = 0; i < a.length; ++i) {
+                if (a[i] !== b[i]) return false;
+            }
+            return true;
+        }
+
         function take(){
-            console.log(cc);
             hh.push(cc);
-            render();
             doTurn();
         }
 
-        function doCC(cc){
-            console.log("doCC")
+        function skip(){
+            dd.push(cc);
+            doTurn();
+        }
+
+        function trade(){
+
+        }
+
+        function test(){
+            var valuesArr = ["v1","v2","v3","v4","v5"],
+                removeValFromIndex = [0,2,4];
+
+            for (var i = removeValFromIndex.length -1; i >= 0; i--)
+                valuesArr.splice(removeValFromIndex[i],1);
+        }
+
+
+        function isEqual(a, b, sort) {
+            if (a === b) return true;
+            if (a == null || b == null) return false;
+            if (a.length != b.length) return false;
+
+            if (sort){
+                a.sort();
+                b.sort();
+            }
+
+            for (var i = 0; i < a.length; ++i) {
+                if (a[i] !== b[i]) return false;
+            }
+            return true;
         }
 
         function draw(a){
@@ -225,7 +314,10 @@
         .area { width: 300px; text-align: center}
         .c {border: 1px solid; cursor: pointer; width: 30px; height: 60px; background-color: white; display: inline-block}
         .c:hover {border-color: red}
-        .disable {pointer-events: none; filter:grayscale(1)}
+        .disable {pointer-events: none; filter:grayscale(1); opacity: 0.5}
+        .opt {margin-left: 30px; display: block}
+        .opt:hover {color:blue;pointer:cursor}
+        .sell {display:none}
     </style>
 </head>
 <body>
@@ -238,6 +330,12 @@
             </div>
             <div class="ctr">24</div>
         </div>
+        <br/>
+        <div class="sell area">
+            <div class="order"></div>
+            <div class="give"></div>
+        </div>
+
         <br/>
         <div class="hh area">
 
