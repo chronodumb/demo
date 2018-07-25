@@ -34,45 +34,52 @@
 
         var gs= [
             {lv:1, type:"g", name:"GA1",up:"GA2",take:[1,2]},
-            {lv:2, type:"g", name:"GA2",up:"GA3",take:[1,3]},
-            {lv:3, type:"g", name:"GA3",up:"GA4",take:[1,4,3]},
-            {lv:4, type:"g", name:"GA4",up:"GA5",take:[1,5,4]},
-            {lv:5, type:"g", name:"GA5",up:"end",take:[1,6,5,4]},
+            {lv:2, type:"g", name:"GA2",up:"GA3",down:"GA1",take:[1,3]},
+            {lv:3, type:"g", name:"GA3",up:"GA4",down:"GA2",take:[1,4,3]},
+            {lv:4, type:"g", name:"GA4",up:"GA5",down:"GA3",take:[1,5,4]},
+            {lv:5, type:"g", name:"GA5",up:"end",down:"GA4",take:[1,6,5,4]},
 
             {lv:1, type:"g", name:"GB1",up:"GB2",take:[2,5]},
-            {lv:2, type:"g", name:"GB2",up:"GB3",take:[2,3]},
-            {lv:3, type:"g", name:"GB3",up:"GB4",take:[2,3,1]},
-            {lv:4, type:"g", name:"GB4",up:"GB5",take:[2,3,4]},
-            {lv:5, type:"g", name:"GB5",up:"end",take:[2,5,6,4]},
+            {lv:2, type:"g", name:"GB2",up:"GB3",down:"GB1",take:[2,3]},
+            {lv:3, type:"g", name:"GB3",up:"GB4",down:"GB2",take:[2,3,1]},
+            {lv:4, type:"g", name:"GB4",up:"GB5",down:"GB3",take:[2,3,4]},
+            {lv:5, type:"g", name:"GB5",up:"end",down:"GB4",take:[2,5,6,4]},
 
-            {lv:1, type:"g", name:"GC1",up:"GB2",take:[3,5]},
-            {lv:2, type:"g", name:"GC2",up:"GB3",take:[3,6]},
-            {lv:3, type:"g", name:"GC3",up:"GB4",take:[3,6,4]},
-            {lv:4, type:"g", name:"GC4",up:"GB5",take:[3,3,4]},
-            {lv:5, type:"g", name:"GC5",up:"end",take:[3,5,4,4]},
+            {lv:1, type:"g", name:"GC1",up:"GC2",take:[3,5]},
+            {lv:2, type:"g", name:"GC2",up:"GC3",down:"GC1",take:[3,6]},
+            {lv:3, type:"g", name:"GC3",up:"GC4",down:"GC2",take:[3,6,4]},
+            {lv:4, type:"g", name:"GC4",up:"GC5",down:"GC3",take:[3,3,4]},
+            {lv:5, type:"g", name:"GC5",up:"end",down:"GC4",take:[3,5,4,4]},
 
-            {lv:1, type:"g", name:"GD1",up:"GB2",take:[4,3]},
-            {lv:2, type:"g", name:"GD2",up:"GB3",take:[4,6]},
-            {lv:3, type:"g", name:"GD3",up:"GB4",take:[4,3,2]},
-            {lv:4, type:"g", name:"GD4",up:"GB5",take:[4,2,4]},
-            {lv:5, type:"g", name:"GD5",up:"end",take:[4,2,1,1]},
+            {lv:1, type:"g", name:"GD1",up:"GD2",take:[4,3]},
+            {lv:2, type:"g", name:"GD2",up:"GD3",down:"GD1",take:[4,6]},
+            {lv:3, type:"g", name:"GD3",up:"GD4",down:"GD2",take:[4,3,2]},
+            {lv:4, type:"g", name:"GD4",up:"GD5",down:"GD3",take:[4,2,4]},
+            {lv:5, type:"g", name:"GD5",up:"end",down:"GD4",take:[4,2,1,1]},
 
-            {lv:1, type:"g", name:"GE1",up:"GB2",take:[5,5]},
-            {lv:2, type:"g", name:"GE2",up:"GB3",take:[5,3]},
-            {lv:3, type:"g", name:"GE3",up:"GB4",take:[5,2,2]},
-            {lv:4, type:"g", name:"GE4",up:"GB5",take:[5,4,3]},
-            {lv:5, type:"g", name:"GE5",up:"end",take:[5,2,1,4]},
+            {lv:1, type:"g", name:"GE1",up:"GE2",take:[5,5]},
+            {lv:2, type:"g", name:"GE2",up:"GE3",down:"GE1",take:[5,3]},
+            {lv:3, type:"g", name:"GE3",up:"GE4",down:"GE2",take:[5,2,2]},
+            {lv:4, type:"g", name:"GE4",up:"GE5",down:"GE3",take:[5,4,3]},
+            {lv:5, type:"g", name:"GE5",up:"end",down:"GE4",take:[5,2,1,4]},
 
             {lv:1, type:"g", name:"GF1",up:"GB2",take:[6,1]},
-            {lv:2, type:"g", name:"GF2",up:"GB3",take:[6,3]},
-            {lv:3, type:"g", name:"GF3",up:"GB4",take:[6,5,2]},
-            {lv:4, type:"g", name:"GF4",up:"GB5",take:[6,2,3]},
-            {lv:5, type:"g", name:"GF5",up:"end",take:[6,2,3,4]},
+            {lv:2, type:"g", name:"GF2",up:"GB3",down:"GF1",take:[6,3]},
+            {lv:3, type:"g", name:"GF3",up:"GB4",down:"GF2",take:[6,5,2]},
+            {lv:4, type:"g", name:"GF4",up:"GB5",down:"GF3",take:[6,2,3]},
+            {lv:5, type:"g", name:"GF5",up:"end",down:"GF4",take:[6,2,3,4]},
         ];
 
+        var gm = gs.reduce(function(map, obj) {
+            map[obj.name] = obj;
+            return map;
+        }, {});
+
+        console.log(gm)
+
         var ss = [
-            {type:"s", name: "ss1", take:[1], takeOr:[0,0] },
-            {type:"s", name: "ss2", take:[0]},
+            {s:true, type:"s1", name: "ss1", take:[1], takeOr:[0,0] },
+            {s:true, type:"s2", name: "ss2"},
         ]
 
         var cc = null;
@@ -174,6 +181,13 @@
 
         function render(){
             $(".ctr").html(td.length);
+            $(".hh .c").removeClass("disable");
+
+            var hr = "";
+            for (i in hh){
+                hr += "<div class='c' onclick='give("+ i +")' id='hh"+ i +"'>" + hh[i].name + "</div> "
+            }
+            $(".hh").html(hr);
 
             if (cc){
                 console.log(cc);
@@ -182,17 +196,66 @@
 
                 let opt1="",opt2="<a class='opt' onclick='skip()'>SKIP</a><br/>";
                 if (cc.type=="r"){
-                    opt1 = "<a class='opt' onclick='take()'>TAKE</a>"
+                    if (hh.length < 6)
+                        opt1 = "<a class='opt' onclick='take("+ cc.give +")'>TAKE</a>";
+                    else {
+                        opt1 = "<a class='opt disable trade' onclick='trade()'>SWAP</a>";
+                        sell = [];
+                        $(".sell").show();
+
+                        $(".sell .order").html(cc.give + " = ?");
+                        $(".sell .give").html();
+                    }
                 }
                 if (cc.type=="t"){
-                    opt1 = "<a class='opt disable' onclick='trade()'>TRADE</a>"
+                    opt1 = "<a class='opt disable trade' onclick='trade()'>TRADE</a>"
 
                     sell = [];
                     $(".sell").show();
 
                     $(".sell .order").html(cc.give + " = " + cc.take);
                     $(".sell .give").html();
+
+                    for (i in hh){
+                        if (!cc.take.includes(hh[i].give))
+                            $("#hh"+i).addClass("disable");
+                    }
                 }
+                if (cc.type == "s2"){
+                    opt1 = "<a class='opt disable trade' onclick='trade()'>DONATE</a>";
+                    opt2 = "";
+
+                    sell = [];
+                    $(".sell").show();
+
+                    $(".sell .order").html("?");
+                    $(".sell .give").html();
+                }
+                if (cc.type == "s1"){
+                    opt1 = "<a class='opt disable trade' onclick='trade()'>PAY</a>";
+                    opt2 = "<a class='opt disable trade' onclick='rndGive()'>BRIBE</a>";
+
+                    sell = [];
+                    $(".sell").show();
+
+                    $(".sell .order").html("?");
+                    $(".sell .give").html();
+                }
+
+
+                if (cc.type == "g"){
+                    opt1 = "<a class='opt disable trade' onclick='levelup()'>GIFT</a>";
+
+                    if(cc.lv > 1)
+                        opt2 = "<a class='opt' onclick='leveldown()'>IGNORE</a>";
+
+                    sell = [];
+                    $(".sell").show();
+
+                    $(".sell .order").html("♥ = " + cc.take);
+                    $(".sell .give").html();
+                }
+
 
                 $(".td").html("<div class='c'>"
                     + cc.name
@@ -201,23 +264,51 @@
                     + "</div>");
             }
 
-            var hr = "";
-            for (i in hh){
-                hr += "<div class='c' onclick='give("+ i +")' id='hh"+ i +"'>" + hh[i].name + "</div> "
-            }
-            $(".hh").html(hr);
+        }
 
+        function levelup(){
+            console.log("levelup");
+
+            var nc = gm[cc.up];
+            cc = nc;
+
+            console.log(cc);
+            discard();
+            skip();
+        }
+
+        function leveldown(){
+            console.log("leveldown");
+            var nc = gm[cc.down];
+            skip();
         }
 
         function trade(){
-            console.log("trade")
-            if (sell.length == 0){
+            console.log("trade");
+            discard();
+            take(cc.give);
+        }
 
+        function discard(){
+            sell.sort(function(a,b){ return b - a; });
+            for (var x = sell.length -1; x >= 0; x--){
+                var i = sell[x];
+                hh.splice(i,1);
             }
+            sell = [];
+            renderSell();
+        }
+
+        function take(i){
+            if (i)
+                hh.push(rs[i-1]);
+            doTurn();
         }
 
         function give(i){
-            if (cc.take && cc.take.includes(hh[i].give)){
+            if ( (cc.take && cc.take.includes(hh[i].give) )
+                || (cc.type == "r" && sell.length < 1)
+                || (cc.s && sell.length < 1)){
                 sell.push(i);
                 $("#hh"+i).addClass("disable");
                 renderSell();
@@ -234,12 +325,23 @@
         function renderSell(){
             $(".sell").show();
 
-            var seller = "";
+            var seller = "", give = [];
             for (x in sell){
                 var i = sell[x];
-                seller += "<a class='c' onclick='ungive("+i+")'>" + hh[i].name+ "</a>";
+                seller += "<a class='c' onclick='ungive("+x+")'>" + hh[i].name+ "</a>";
+                give.push(hh[i].give);
             }
             $(".sell .give").html(seller);
+
+            console.log(give + " == " + cc.take)
+
+            if (isEqual(give,cc.take)
+                || (cc.type == "r" && sell.length == 1)
+                || (cc.s && sell.length == 1)){
+                $(".opt.trade").removeClass("disable");
+            } else {
+                $(".opt.trade").addClass("disable");
+            }
         }
 
         function isEqual(a,b){
@@ -257,26 +359,9 @@
             return true;
         }
 
-        function take(){
-            hh.push(cc);
-            doTurn();
-        }
-
         function skip(){
             dd.push(cc);
             doTurn();
-        }
-
-        function trade(){
-
-        }
-
-        function test(){
-            var valuesArr = ["v1","v2","v3","v4","v5"],
-                removeValFromIndex = [0,2,4];
-
-            for (var i = removeValFromIndex.length -1; i >= 0; i--)
-                valuesArr.splice(removeValFromIndex[i],1);
         }
 
 
@@ -312,7 +397,7 @@
     </script>
     <style>
         .area { width: 300px; text-align: center}
-        .c {border: 1px solid; cursor: pointer; width: 30px; height: 60px; background-color: white; display: inline-block}
+        .c {border: 1px solid; width: 30px; height: 60px; background-color: white; cursor: pointer; display: inline-block}
         .c:hover {border-color: red}
         .disable {pointer-events: none; filter:grayscale(1); opacity: 0.5}
         .opt {margin-left: 30px; display: block}
