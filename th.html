@@ -162,6 +162,11 @@
         }
 
         function doTurn(){
+
+            if (hh.length == 0){
+                lose();
+            }
+
             sell = [];
 
             if (td.length < 3){
@@ -233,7 +238,20 @@
                 }
                 if (cc.type == "s1"){
                     opt1 = "<a class='opt disable trade' onclick='trade()'>PAY</a>";
-                    opt2 = "<a class='opt disable trade' onclick='rndGive()'>BRIBE</a>";
+                    opt2 = "<a class='opt disable' onclick='rndGive()'>BRIBE</a>";
+
+                    if (hh.length >= 2){
+                        opt2 = "<a class='opt' onclick='rndGive()'>BRIBE</a>";
+                    }
+
+                    for (i in hh){
+                        if (!cc.take.includes(hh[i].give))
+                            $("#hh"+i).addClass("disable");
+                    }
+
+                    if (hh.length == 1 && hh[0].type != cc.take){
+                        lose();
+                    }
 
                     sell = [];
                     $(".sell").show();
@@ -266,8 +284,30 @@
 
         }
 
+        function win(){
+            alert("you win");
+            window.location.reload();
+        }
+
+        function lose(){
+            alert("you lose");
+            window.location.reload();
+        }
+
+        function rndGive(){
+            shuffle(hh);
+            sell=[0,1];
+            discard();
+            skip();
+        }
+
         function levelup(){
             console.log("levelup");
+
+            if(cc.up == "end"){
+                win();
+                return;
+            }
 
             var nc = gm[cc.up];
             cc = nc;
